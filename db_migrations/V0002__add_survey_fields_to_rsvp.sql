@@ -1,0 +1,6 @@
+ALTER TABLE rsvp
+ADD COLUMN has_plus_one BOOLEAN DEFAULT FALSE,
+ADD COLUMN plus_one_name VARCHAR(200),
+ADD COLUMN allergies TEXT,
+ADD COLUMN drink_preference VARCHAR(50),
+ADD COLUMN need_transfer BOOLEAN DEFAULT FALSE;

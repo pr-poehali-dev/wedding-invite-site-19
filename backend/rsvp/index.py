@@ -33,6 +33,11 @@ def handler(event, context):
         last_name = body.get('last_name', '').strip()
         guests_count = body.get('guests_count', 1)
         wishes = body.get('wishes', '').strip()
+        has_plus_one = body.get('has_plus_one', False)
+        plus_one_name = body.get('plus_one_name', '').strip()
+        allergies = body.get('allergies', '').strip()
+        drink_preference = body.get('drink_preference', '').strip()
+        need_transfer = body.get('need_transfer', False)
 
         if not first_name or not last_name:
             cur.close()
@@ -43,9 +48,16 @@ def handler(event, context):
                 'body': json.dumps({'error': 'Имя и фамилия обязательны'})
             }
 
+        esc = lambda s: s.replace("'", "''")
         cur.execute(
-            "INSERT INTO rsvp (first_name, last_name, guests_count, wishes) VALUES ('%s', '%s', %d, '%s') RETURNING id"
-            % (first_name.replace("'", "''"), last_name.replace("'", "''"), int(guests_count), wishes.replace("'", "''"))
+            "INSERT INTO rsvp (first_name, last_name, guests_count, wishes, has_plus_one, plus_one_name, allergies, drink_preference, need_transfer) "
+            "VALUES ('%s', '%s', %d, '%s', %s, '%s', '%s', '%s', %s) RETURNING id"
+            % (
+                esc(first_name), esc(last_name), int(guests_count), esc(wishes),
+                'TRUE' if has_plus_one else 'FALSE',
+                esc(plus_one_name), esc(allergies), esc(drink_preference),
+                'TRUE' if need_transfer else 'FALSE'
+            )
         )
         row_id = cur.fetchone()[0]
         conn.commit()
@@ -58,7 +70,11 @@ def handler(event, context):
             'body': json.dumps({'success': True, 'id': row_id})
         }
 
-    cur.execute("SELECT id, first_name, last_name, guests_count, wishes, created_at::text FROM rsvp ORDER BY created_at DESC")
+    cur.execute(
+        "SELECT id, first_name, last_name, guests_count, wishes, created_at::text, "
+        "has_plus_one, plus_one_name, allergies, drink_preference, need_transfer "
+        "FROM rsvp ORDER BY created_at DESC"
+    )
     rows = cur.fetchall()
     cur.close()
     conn.close()
@@ -70,7 +86,12 @@ def handler(event, context):
             'last_name': r[2],
             'guests_count': r[3],
             'wishes': r[4],
-            'created_at': r[5]
+            'created_at': r[5],
+            'has_plus_one': r[6],
+            'plus_one_name': r[7],
+            'allergies': r[8],
+            'drink_preference': r[9],
+            'need_transfer': r[10]
         }
         for r in rows
     ]
