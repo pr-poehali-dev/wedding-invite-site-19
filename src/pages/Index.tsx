@@ -11,10 +11,9 @@ const VENUE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-67
 const galleryImages = [HERO_IMAGE, COUPLE_IMAGE, VENUE_IMAGE, HERO_IMAGE, COUPLE_IMAGE, VENUE_IMAGE];
 
 const schedule = [
-  { time: "15:00", title: "Церемония", desc: "Торжественная регистрация брака", icon: "Heart" },
+  { time: "10:00", title: "Церемония", desc: "Торжественная регистрация брака", icon: "Heart" },
+  { time: "11:00", title: "Прогулка", desc: "Фотографирование в Санкт-Петербурге", icon: "Camera" },
   { time: "16:00", title: "Фуршет", desc: "Лёгкие закуски и шампанское", icon: "Wine" },
-  { time: "17:00", title: "Банкет", desc: "Праздничный ужин и первый танец", icon: "Music" },
-  { time: "20:00", title: "Вечеринка", desc: "Танцы и веселье до утра", icon: "PartyPopper" },
 ];
 
 const Index = () => {
