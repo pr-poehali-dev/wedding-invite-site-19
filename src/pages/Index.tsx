@@ -8,7 +8,6 @@ const HERO_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676
 const COUPLE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/files/c0d9e187-357a-4f7f-8625-2f5b05056cb7.jpg";
 const VENUE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/files/9406c677-886e-4ff2-89e1-6cfa6268690b.jpg";
 
-const galleryImages = [HERO_IMAGE, COUPLE_IMAGE, VENUE_IMAGE, HERO_IMAGE, COUPLE_IMAGE, VENUE_IMAGE];
 
 const schedule = [
   { time: "10:00", title: "Церемония", desc: "Торжественная регистрация брака", icon: "Heart" },
@@ -18,9 +17,8 @@ const schedule = [
 
 const Index = () => {
   const [rsvpSent, setRsvpSent] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
 
-  const targetDate = new Date("2026-08-26T15:00:00");
+  const targetDate = new Date("2026-08-26T10:00:00");
   const now = new Date();
   const diff = targetDate.getTime() - now.getTime();
   const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
@@ -36,7 +34,7 @@ const Index = () => {
             <a href="#about" className="hover:opacity-60 transition-opacity">О нас</a>
             <a href="#schedule" className="hover:opacity-60 transition-opacity">Расписание</a>
             <a href="#venue" className="hover:opacity-60 transition-opacity">Место</a>
-            <a href="#gallery" className="hover:opacity-60 transition-opacity">Галерея</a>
+            <a href="#map" className="hover:opacity-60 transition-opacity">Карта</a>
             <a href="#rsvp" className="hover:opacity-60 transition-opacity">RSVP</a>
           </div>
         </div>
@@ -171,8 +169,8 @@ const Index = () => {
                   <h3 className="font-serif text-xl" style={{ color: "hsl(var(--wedding-dark))" }}>Адрес</h3>
                 </div>
                 <p className="text-muted-foreground font-light ml-8">
-                  Загородная усадьба «Тихий сад»<br />
-                  Московская обл., Одинцовский р-н
+                  ЗАГС Фрунзенского района<br />
+                  г. Санкт-Петербург, проспект Славы, д. 31
                 </p>
               </div>
               <div className="mb-8">
@@ -181,8 +179,8 @@ const Index = () => {
                   <h3 className="font-serif text-xl" style={{ color: "hsl(var(--wedding-dark))" }}>Дата</h3>
                 </div>
                 <p className="text-muted-foreground font-light ml-8">
-                  26 августа 2026, суббота<br />
-                  Начало церемонии в 15:00
+                  26 августа 2026, среда<br />
+                  Начало церемонии в 10:00
                 </p>
               </div>
               <div>
@@ -200,48 +198,44 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="gallery" className="py-24 md:py-32" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
+      <section id="map" className="py-24 md:py-32" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-16">
-            <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4">Моменты счастья</p>
+            <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4">Как добраться</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light mb-4" style={{ color: "hsl(var(--wedding-dark))" }}>
-              Наша галерея
+              Карта
             </h2>
             <div className="wedding-divider mb-8" />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {galleryImages.map((img, i) => (
-              <div
-                key={i}
-                className={`overflow-hidden cursor-pointer group ${i === 0 ? "row-span-2" : ""}`}
-                onClick={() => setSelectedPhoto(i)}
-              >
-                <img
-                  src={img}
-                  alt={`Gallery ${i + 1}`}
-                  className={`w-full object-cover transition-transform duration-700 group-hover:scale-105 ${i === 0 ? "h-full aspect-auto" : "aspect-square"}`}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {selectedPhoto !== null && (
-          <div
-            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-6"
-            onClick={() => setSelectedPhoto(null)}
-          >
-            <button className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors">
-              <Icon name="X" size={28} />
-            </button>
-            <img
-              src={galleryImages[selectedPhoto]}
-              alt="Full"
-              className="max-w-full max-h-[85vh] object-contain animate-scale-in"
+          <div className="overflow-hidden rounded-lg shadow-sm border border-border/50">
+            <iframe
+              src="https://yandex.ru/map-widget/v1/?pt=30.386152,59.856966&z=16&l=map"
+              width="100%"
+              height="450"
+              frameBorder="0"
+              style={{ border: 0, display: "block" }}
+              allowFullScreen
+              title="Карта — ЗАГС Фрунзенского района"
             />
           </div>
-        )}
+
+          <div className="mt-8 text-center">
+            <p className="text-muted-foreground font-light mb-4">
+              ЗАГС Фрунзенского района — проспект Славы, д. 31
+            </p>
+            <a
+              href="https://yandex.ru/maps/?pt=30.386152,59.856966&z=16&l=map"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm tracking-widest uppercase font-light hover:opacity-60 transition-opacity"
+              style={{ color: "hsl(var(--wedding-dark))" }}
+            >
+              <Icon name="Navigation" size={16} />
+              Построить маршрут
+            </a>
+          </div>
+        </div>
       </section>
 
       <section id="rsvp" className="py-24 md:py-32">
