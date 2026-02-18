@@ -21,7 +21,7 @@ const Index = () => {
   const [rsvpSent, setRsvpSent] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
 
-  const targetDate = new Date("2026-08-15T15:00:00");
+  const targetDate = new Date("2026-08-26T15:00:00");
   const now = new Date();
   const diff = targetDate.getTime() - now.getTime();
   const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
@@ -31,7 +31,7 @@ const Index = () => {
       <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="font-serif text-xl tracking-wide" style={{ color: "hsl(var(--wedding-dark))" }}>
-            А & Е
+            В & Н
           </span>
           <div className="hidden md:flex gap-8 text-sm tracking-widest uppercase font-light">
             <a href="#about" className="hover:opacity-60 transition-opacity">О нас</a>
@@ -53,7 +53,7 @@ const Index = () => {
             Приглашение на свадьбу
           </p>
           <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-light mb-4 opacity-0 animate-fade-in animate-delay-200">
-            Александр
+            Ванюшка
           </h1>
           <div className="flex items-center justify-center gap-6 mb-4 opacity-0 animate-fade-in animate-delay-300">
             <div className="w-16 h-px bg-white/50" />
@@ -61,10 +61,10 @@ const Index = () => {
             <div className="w-16 h-px bg-white/50" />
           </div>
           <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-light mb-8 opacity-0 animate-fade-in animate-delay-400">
-            Елена
+            Настюшка
           </h1>
           <p className="text-lg tracking-[0.3em] uppercase font-light opacity-0 animate-fade-in animate-delay-500">
-            15 августа 2026
+            26 августа 2026
           </p>
         </div>
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
@@ -182,7 +182,7 @@ const Index = () => {
                   <h3 className="font-serif text-xl" style={{ color: "hsl(var(--wedding-dark))" }}>Дата</h3>
                 </div>
                 <p className="text-muted-foreground font-light ml-8">
-                  15 августа 2026, суббота<br />
+                  26 августа 2026, суббота<br />
                   Начало церемонии в 15:00
                 </p>
               </div>
@@ -253,7 +253,7 @@ const Index = () => {
           </h2>
           <div className="wedding-divider mb-8" />
           <p className="text-muted-foreground font-light mb-10">
-            Пожалуйста, сообщите нам о вашем присутствии до 1 августа 2026
+            Пожалуйста, сообщите нам о вашем присутствии до 26 апреля 2026
           </p>
 
           {!rsvpSent ? (
@@ -305,8 +305,8 @@ const Index = () => {
       </section>
 
       <footer className="py-12 text-center border-t" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
-        <p className="font-serif text-3xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}>А & Е</p>
-        <p className="text-sm text-muted-foreground font-light tracking-widest">15 . 08 . 2026</p>
+        <p className="font-serif text-3xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}>В & Н</p>
+        <p className="text-sm text-muted-foreground font-light tracking-widest">26 . 08 . 2026</p>
         <div className="flex justify-center gap-4 mt-6">
           <a href="#" className="text-muted-foreground hover:opacity-60 transition-opacity">
             <Icon name="Instagram" size={18} />
