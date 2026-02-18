@@ -1,0 +1,27 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS returns CORS headers",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "POST with wrong credentials returns error",
+      "method": "POST",
+      "path": "/",
+      "body": {"login": "wrong", "password": "wrong"},
+      "expectedStatus": 500,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "GET without token returns 401",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 401,
+      "expectedBody": {"valid": false},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
