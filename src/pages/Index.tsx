@@ -191,8 +191,11 @@ const Index = () => {
                   <Icon name="Shirt" size={20} className="text-muted-foreground" />
                   <h3 className="font-serif text-xl" style={{ color: "hsl(var(--wedding-dark))" }}>Дресс-код</h3>
                 </div>
-                <p className="text-muted-foreground font-light ml-8 mb-3">
+                <p className="text-muted-foreground font-light ml-8 mb-1">
                   Коктейльный / кэжуал
+                </p>
+                <p className="text-muted-foreground font-light ml-8 text-sm mb-3">
+                  Мужчинам: тёмный низ и светлая рубашка или поло
                 </p>
                 <div className="flex items-center gap-3 ml-8">
                   {["#3FA38D", "#FFF990", "#89D5DB", "#3295F7", "#4D3407"].map((color) => (
