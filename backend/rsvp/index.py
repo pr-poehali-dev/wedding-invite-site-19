@@ -3,14 +3,14 @@ import os
 import psycopg2
 
 def handler(event, context):
-    """Сохранение и получение RSVP-ответов гостей свадьбы"""
+    """Управление RSVP-ответами гостей: создание, список, редактирование, удаление"""
 
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Max-Age': '86400'
             },
@@ -26,6 +26,7 @@ def handler(event, context):
     cur = conn.cursor()
 
     method = event.get('httpMethod', 'GET')
+    esc = lambda s: s.replace("'", "''")
 
     if method == 'POST':
         body = json.loads(event.get('body', '{}'))
@@ -48,7 +49,6 @@ def handler(event, context):
                 'body': json.dumps({'error': 'Имя и фамилия обязательны'})
             }
 
-        esc = lambda s: s.replace("'", "''")
         cur.execute(
             "INSERT INTO rsvp (first_name, last_name, guests_count, wishes, has_plus_one, plus_one_name, allergies, drink_preference, need_transfer) "
             "VALUES ('%s', '%s', %d, '%s', %s, '%s', '%s', '%s', %s) RETURNING id"
@@ -68,6 +68,71 @@ def handler(event, context):
             'statusCode': 200,
             'headers': headers,
             'body': json.dumps({'success': True, 'id': row_id})
+        }
+
+    if method == 'PUT':
+        body = json.loads(event.get('body', '{}'))
+        guest_id = body.get('id')
+        if not guest_id:
+            cur.close()
+            conn.close()
+            return {
+                'statusCode': 400,
+                'headers': headers,
+                'body': json.dumps({'error': 'ID обязателен'})
+            }
+
+        fields = []
+        for field in ['first_name', 'last_name', 'plus_one_name', 'allergies', 'drink_preference', 'wishes']:
+            if field in body:
+                fields.append("%s = '%s'" % (field, esc(str(body[field]).strip())))
+        for field in ['has_plus_one', 'need_transfer']:
+            if field in body:
+                fields.append("%s = %s" % (field, 'TRUE' if body[field] else 'FALSE'))
+        if 'guests_count' in body:
+            fields.append("guests_count = %d" % int(body['guests_count']))
+
+        if not fields:
+            cur.close()
+            conn.close()
+            return {
+                'statusCode': 400,
+                'headers': headers,
+                'body': json.dumps({'error': 'Нет полей для обновления'})
+            }
+
+        cur.execute("UPDATE rsvp SET %s WHERE id = %d" % (', '.join(fields), int(guest_id)))
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return {
+            'statusCode': 200,
+            'headers': headers,
+            'body': json.dumps({'success': True})
+        }
+
+    if method == 'DELETE':
+        params = event.get('queryStringParameters') or {}
+        guest_id = params.get('id')
+        if not guest_id:
+            cur.close()
+            conn.close()
+            return {
+                'statusCode': 400,
+                'headers': headers,
+                'body': json.dumps({'error': 'ID обязателен'})
+            }
+
+        cur.execute("DELETE FROM rsvp WHERE id = %d" % int(guest_id))
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return {
+            'statusCode': 200,
+            'headers': headers,
+            'body': json.dumps({'success': True})
         }
 
     cur.execute(

@@ -31,6 +31,31 @@
         "guests": "array"
       },
       "bodyMatcher": "partial"
+    },
+    {
+      "name": "Update RSVP",
+      "method": "PUT",
+      "path": "/",
+      "body": {
+        "id": 1,
+        "first_name": "Обновлённый",
+        "guests_count": 3
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Delete RSVP",
+      "method": "DELETE",
+      "path": "/?id=1",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
     }
   ]
 }
