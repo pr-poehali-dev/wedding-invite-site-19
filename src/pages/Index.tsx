@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/files/7f7bcfe9-3e73-409e-986b-21f9bcfd686e.jpg";
-const COUPLE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/files/c0d9e187-357a-4f7f-8625-2f5b05056cb7.jpg";
+const COUPLE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/bucket/37a538de-c152-4e90-9f03-e0d84772c62c.jpg";
+const CHILD_VANYA = "https://cdn.poehali.dev/files/2cf75f75-f8e9-47cf-8784-c0c9b56811c3.png";
+const CHILD_NASTYA = "https://cdn.poehali.dev/files/51566e37-37ec-41b5-b1fd-0c72fa3228c0.png";
 const VENUE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/files/9406c677-886e-4ff2-89e1-6cfa6268690b.jpg";
 
 
@@ -92,28 +94,42 @@ const Index = () => {
 
       <section id="about" className="py-24 md:py-32">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="order-2 md:order-1">
-              <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4">Наша история</p>
-              <h2 className="font-serif text-4xl md:text-5xl font-light mb-6" style={{ color: "hsl(var(--wedding-dark))" }}>
-                О событии
-              </h2>
-              <div className="wedding-divider mb-8" style={{ margin: "0 0 2rem 0" }} />
-              <p className="leading-relaxed text-muted-foreground mb-4 font-light">
-                Дорогие друзья и родные! Мы рады сообщить вам о самом важном дне в нашей жизни.
-                После нескольких лет вместе мы решили связать наши судьбы навсегда.
-              </p>
-              <p className="leading-relaxed text-muted-foreground font-light">
-                Будем счастливы разделить этот прекрасный момент с каждым из вас.
-                Ваше присутствие — лучший подарок для нас.
-              </p>
-            </div>
-            <div className="order-1 md:order-2">
-              <div className="relative">
-                <img src={COUPLE_IMAGE} alt="Couple" className="w-full aspect-[3/4] object-cover" />
-                <div className="absolute -bottom-4 -left-4 w-24 h-24 border-2" style={{ borderColor: "hsl(var(--wedding-gold))" }} />
-                <div className="absolute -top-4 -right-4 w-24 h-24 border-2" style={{ borderColor: "hsl(var(--wedding-gold))" }} />
+          <div className="text-center mb-16">
+            <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4">Наша история</p>
+            <h2 className="font-serif text-4xl md:text-5xl font-light mb-4" style={{ color: "hsl(var(--wedding-dark))" }}>
+              О событии
+            </h2>
+            <div className="wedding-divider mb-8" />
+            <p className="leading-relaxed text-muted-foreground font-light max-w-xl mx-auto">
+              Дорогие друзья и родные! Мы рады сообщить вам о самом важном дне в нашей жизни.
+              Будем счастливы разделить этот прекрасный момент с каждым из вас.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 items-end">
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative w-full max-w-[280px]">
+                <img src={CHILD_VANYA} alt="Ванюшка в детстве" className="w-full aspect-square object-cover rounded-lg shadow-md" />
+                <div className="absolute -bottom-3 -right-3 w-16 h-16 border-2 rounded-lg" style={{ borderColor: "hsl(var(--wedding-gold))" }} />
               </div>
+              <p className="font-serif text-lg text-muted-foreground italic">Ванюшка</p>
+            </div>
+
+            <div className="flex flex-col items-center gap-4 md:-mt-8">
+              <div className="relative w-full">
+                <img src={COUPLE_IMAGE} alt="Ванюшка и Настюшка" className="w-full aspect-[3/4] object-cover rounded-lg shadow-lg" />
+                <div className="absolute -bottom-4 -left-4 w-20 h-20 border-2 rounded-lg" style={{ borderColor: "hsl(var(--wedding-gold))" }} />
+                <div className="absolute -top-4 -right-4 w-20 h-20 border-2 rounded-lg" style={{ borderColor: "hsl(var(--wedding-gold))" }} />
+              </div>
+              <p className="font-serif text-lg italic" style={{ color: "hsl(var(--wedding-dark))" }}>Вместе навсегда</p>
+            </div>
+
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative w-full max-w-[280px]">
+                <img src={CHILD_NASTYA} alt="Настюшка в детстве" className="w-full aspect-square object-cover rounded-lg shadow-md" />
+                <div className="absolute -bottom-3 -left-3 w-16 h-16 border-2 rounded-lg" style={{ borderColor: "hsl(var(--wedding-gold))" }} />
+              </div>
+              <p className="font-serif text-lg text-muted-foreground italic">Настюшка</p>
             </div>
           </div>
         </div>
