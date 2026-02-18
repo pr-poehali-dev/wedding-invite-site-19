@@ -15,8 +15,11 @@ const schedule = [
   { time: "16:00", title: "Фуршет", desc: "Лёгкие закуски и шампанское", icon: "Wine" },
 ];
 
+const RSVP_URL = "https://functions.poehali.dev/31b8454d-9cf0-44ef-bccc-adab5d9505d2";
+
 const Index = () => {
   const [rsvpSent, setRsvpSent] = useState(false);
+  const [rsvpLoading, setRsvpLoading] = useState(false);
 
   const targetDate = new Date("2026-08-26T10:00:00");
   const now = new Date();
@@ -261,35 +264,53 @@ const Index = () => {
           {!rsvpSent ? (
             <form
               className="space-y-4 text-left"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                setRsvpSent(true);
+                setRsvpLoading(true);
+                const form = e.target as HTMLFormElement;
+                const data = {
+                  first_name: (form.elements.namedItem("first_name") as HTMLInputElement).value,
+                  last_name: (form.elements.namedItem("last_name") as HTMLInputElement).value,
+                  guests_count: Number((form.elements.namedItem("guests_count") as HTMLInputElement).value),
+                  wishes: (form.elements.namedItem("wishes") as HTMLTextAreaElement).value,
+                };
+                try {
+                  const res = await fetch(RSVP_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                  });
+                  if (res.ok) setRsvpSent(true);
+                } finally {
+                  setRsvpLoading(false);
+                }
               }}
             >
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs tracking-widest uppercase text-muted-foreground mb-2 block">Имя</label>
-                  <Input placeholder="Ваше имя" className="bg-background border-border/60 font-light" required />
+                  <Input name="first_name" placeholder="Ваше имя" className="bg-background border-border/60 font-light" required />
                 </div>
                 <div>
                   <label className="text-xs tracking-widest uppercase text-muted-foreground mb-2 block">Фамилия</label>
-                  <Input placeholder="Ваша фамилия" className="bg-background border-border/60 font-light" required />
+                  <Input name="last_name" placeholder="Ваша фамилия" className="bg-background border-border/60 font-light" required />
                 </div>
               </div>
               <div>
                 <label className="text-xs tracking-widest uppercase text-muted-foreground mb-2 block">Количество гостей</label>
-                <Input type="number" min="1" max="5" defaultValue="1" className="bg-background border-border/60 font-light" required />
+                <Input name="guests_count" type="number" min="1" max="5" defaultValue="1" className="bg-background border-border/60 font-light" required />
               </div>
               <div>
                 <label className="text-xs tracking-widest uppercase text-muted-foreground mb-2 block">Пожелания</label>
-                <Textarea placeholder="Особые пожелания, диета..." className="bg-background border-border/60 font-light min-h-[100px]" />
+                <Textarea name="wishes" placeholder="Особые пожелания, диета..." className="bg-background border-border/60 font-light min-h-[100px]" />
               </div>
               <Button
                 type="submit"
+                disabled={rsvpLoading}
                 className="w-full py-6 tracking-[0.2em] uppercase text-sm font-light"
                 style={{ backgroundColor: "hsl(var(--wedding-dark))", color: "hsl(var(--wedding-cream))" }}
               >
-                Подтвердить присутствие
+                {rsvpLoading ? "Отправка..." : "Подтвердить присутствие"}
               </Button>
             </form>
           ) : (

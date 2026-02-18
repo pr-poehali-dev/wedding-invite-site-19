@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "name": "RSVP OPTIONS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Create RSVP",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "first_name": "Тест",
+        "last_name": "Гость",
+        "guests_count": 2,
+        "wishes": "Ждём с нетерпением!"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Get RSVP list",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "guests": "array"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
