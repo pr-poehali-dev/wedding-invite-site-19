@@ -15,23 +15,57 @@ const HeroSection = () => {
   const diff = targetDate.getTime() - now.getTime();
   const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
 
+  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
+  const baseVolume = 0.15;
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    v.volume = 0.15;
+    v.volume = baseVolume;
     v.play().catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const v = videoRef.current;
+      if (!v || v.muted) return;
+      const h = window.innerHeight || 1;
+      const y = window.scrollY;
+      const k = Math.max(0, 1 - y / h);
+      v.volume = baseVolume * k;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const toggleSound = () => {
     const v = videoRef.current;
     if (!v) return;
     v.muted = !v.muted;
-    v.volume = 0.15;
+    v.volume = baseVolume;
     setMuted(v.muted);
     v.play().catch(() => {});
+  };
+
+  const toggleFullscreen = () => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const doc = document as Document & { webkitFullscreenElement?: Element };
+    const anyEl = el as HTMLElement & {
+      webkitRequestFullscreen?: () => Promise<void>;
+    };
+    const anyDoc = document as Document & {
+      webkitExitFullscreen?: () => Promise<void>;
+    };
+    if (!doc.fullscreenElement && !doc.webkitFullscreenElement) {
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (anyEl.webkitRequestFullscreen) anyEl.webkitRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (anyDoc.webkitExitFullscreen) anyDoc.webkitExitFullscreen();
+    }
   };
 
   return (
@@ -51,7 +85,7 @@ const HeroSection = () => {
         </div>
       </nav>
 
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section ref={sectionRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0">
           <video
             ref={videoRef}
@@ -67,14 +101,24 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50" />
         </div>
 
-        <button
-          type="button"
-          onClick={toggleSound}
-          className="absolute top-20 right-6 z-20 w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-black/60 transition-colors"
-          title={muted ? "Включить звук" : "Выключить звук"}
-        >
-          <Icon name={muted ? "VolumeX" : "Volume2"} size={18} />
-        </button>
+        <div className="absolute top-20 right-6 z-20 flex gap-2">
+          <button
+            type="button"
+            onClick={toggleSound}
+            className="w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+            title={muted ? "Включить звук" : "Выключить звук"}
+          >
+            <Icon name={muted ? "VolumeX" : "Volume2"} size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={toggleFullscreen}
+            className="w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+            title="На весь экран"
+          >
+            <Icon name="Maximize" size={18} />
+          </button>
+        </div>
         <div className="relative z-10 text-center text-white px-6">
           <p className="text-sm tracking-[0.4em] uppercase font-sans font-light mb-6 opacity-0 animate-fade-in">
             Приглашение на свадьбу
