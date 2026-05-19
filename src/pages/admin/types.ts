@@ -1,7 +1,7 @@
 export const RSVP_URL =
-  "https://functions.poehali.dev/31b8454d-9cf0-44ef-bccc-adab5d9505d2";
+  "https://functions.poehali.dev/e1549638-af55-45e7-b65d-bccaecfbc611";
 export const AUTH_URL =
-  "https://functions.poehali.dev/076c0e5f-9c6c-44c5-9376-fdd07aa33707";
+  "https://functions.poehali.dev/2dd1535d-e621-47fe-a7e5-93dc191c122a";
 
 export const DRINK_LABELS: Record<string, string> = {
   wine: "Вино",

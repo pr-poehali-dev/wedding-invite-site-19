@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-const RSVP_URL = "https://functions.poehali.dev/31b8454d-9cf0-44ef-bccc-adab5d9505d2";
+const RSVP_URL = "https://functions.poehali.dev/e1549638-af55-45e7-b65d-bccaecfbc611";
 
 const DRINK_OPTIONS = [
   { value: "wine", label: "Вино", icon: "Wine" },
