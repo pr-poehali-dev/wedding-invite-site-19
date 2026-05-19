@@ -260,7 +260,19 @@ const RsvpSection = () => {
               <h3 className="font-serif text-2xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}>
                 Спасибо, {survey.first_name}!
               </h3>
-              <p className="text-muted-foreground font-light">Мы с нетерпением ждём встречи с вами</p>
+              <p className="text-muted-foreground font-light mb-10">Мы с нетерпением ждём встречи с вами</p>
+
+              <div className="text-left rounded-lg border p-6 space-y-4" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
+                <p className="font-light leading-relaxed" style={{ color: "hsl(var(--wedding-dark))" }}>
+                  Дорогие друзья и близкие 🤍
+                </p>
+                <p className="text-muted-foreground font-light leading-relaxed">
+                  Пожалуйста, не дарите нам цветы — к сожалению, после торжества у нас не будет возможности забрать их домой, и мы переживаем, что они не успеют нас порадовать 🌷
+                </p>
+                <p className="text-muted-foreground font-light leading-relaxed">
+                  Если захотите поздравить нас дополнительно, будем благодарны за подарок в конверте — он поможет исполнить наши общие мечты ✨
+                </p>
+              </div>
             </div>
           )}
         </div>

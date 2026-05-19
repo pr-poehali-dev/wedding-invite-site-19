@@ -1,11 +1,11 @@
 import Icon from "@/components/ui/icon";
 
-const VENUE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/files/9406c677-886e-4ff2-89e1-6cfa6268690b.jpg";
+const VENUE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/bucket/c87026a8-47d6-4d33-8b9a-d9a21ffd7d42.jpg";
 
 const schedule = [
-  { time: "10:00", title: "Церемония", desc: "Торжественная регистрация брака", icon: "Heart" },
-  { time: "11:00", title: "Прогулка", desc: "Фотографирование в Санкт-Петербурге", icon: "Camera" },
-  { time: "16:00", title: "Фуршет", desc: "Лёгкие закуски и шампанское", icon: "Wine" },
+  { time: "14:00", title: "Сбор гостей + фуршет", desc: "Встреча гостей, лёгкие закуски и шампанское", icon: "Users" },
+  { time: "15:00", title: "Выездная церемония", desc: "Торжественная регистрация брака", icon: "Heart" },
+  { time: "16:00", title: "Банкет", desc: "Праздничный ужин и веселье", icon: "Utensils" },
 ];
 
 const InfoSection = () => {
@@ -64,8 +64,8 @@ const InfoSection = () => {
                   <h3 className="font-serif text-xl" style={{ color: "hsl(var(--wedding-dark))" }}>Адрес</h3>
                 </div>
                 <p className="text-muted-foreground font-light ml-8">
-                  ЗАГС Фрунзенского района<br />
-                  г. Санкт-Петербург, проспект Славы, д. 31
+                  Ленинградская область, Ломоносовский район,<br />
+                  Пениковское сельское поселение, д. Таменгонт
                 </p>
               </div>
               <div className="mb-8">
@@ -75,7 +75,7 @@ const InfoSection = () => {
                 </div>
                 <p className="text-muted-foreground font-light ml-8">
                   26 августа 2026, среда<br />
-                  Начало церемонии в 10:00
+                  Начало церемонии в 15:00
                 </p>
               </div>
               <div>
@@ -117,22 +117,22 @@ const InfoSection = () => {
 
           <div className="overflow-hidden rounded-lg shadow-sm border border-border/50">
             <iframe
-              src="https://yandex.ru/map-widget/v1/?pt=30.386152,59.856966&z=16&l=map"
+              src="https://yandex.ru/map-widget/v1/?pt=29.544700,59.734600&z=14&l=map"
               width="100%"
               height="450"
               frameBorder="0"
               style={{ border: 0, display: "block" }}
               allowFullScreen
-              title="Карта — ЗАГС Фрунзенского района"
+              title="Карта — деревня Таменгонт"
             />
           </div>
 
           <div className="mt-8 text-center">
             <p className="text-muted-foreground font-light mb-4">
-              ЗАГС Фрунзенского района — проспект Славы, д. 31
+              Ленинградская область, Ломоносовский район, д. Таменгонт
             </p>
             <a
-              href="https://yandex.ru/maps/?pt=30.386152,59.856966&z=16&l=map"
+              href="https://yandex.ru/maps/?pt=29.544700,59.734600&z=14&l=map"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm tracking-widest uppercase font-light hover:opacity-60 transition-opacity"
