@@ -288,12 +288,8 @@ const RsvpSection = () => {
               <div className="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-6" style={{ backgroundColor: "hsl(var(--wedding-sand))", color: "hsl(var(--wedding-dark))" }}>
                 <Icon name="Heart" size={28} />
               </div>
-              <h3 className="font-serif text-2xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}>
-                Спасибо, {survey.first_name}
-              </h3>
-              <p className="text-muted-foreground font-light max-w-sm mx-auto">
-                Жаль, что не получится встретиться. Будем рады видеть тебя в другой раз — обнимаем 🤍
-              </p>
+              <h3 className="font-serif text-2xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}></h3>
+              <p className="text-muted-foreground font-light max-w-sm mx-auto">Понимаем, очень жаль, конечно, что не получится увидеться в такой день. Но спасибо что предупредил(а) 🤍 Будем скучать!</p>
             </div>
           ) : (
             <div className="py-16 animate-fade-in">
