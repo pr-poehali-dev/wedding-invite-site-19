@@ -15,7 +15,6 @@ const HeroSection = () => {
   const diff = targetDate.getTime() - now.getTime();
   const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
 
-  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const baseVolume = 0.15;
@@ -50,21 +49,33 @@ const HeroSection = () => {
   };
 
   const toggleFullscreen = () => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const doc = document as Document & { webkitFullscreenElement?: Element };
-    const anyEl = el as HTMLElement & {
+    const v = videoRef.current;
+    if (!v) return;
+
+    type AnyVideo = HTMLVideoElement & {
       webkitRequestFullscreen?: () => Promise<void>;
+      webkitEnterFullscreen?: () => void;
     };
-    const anyDoc = document as Document & {
+    type AnyDoc = Document & {
+      webkitFullscreenElement?: Element;
       webkitExitFullscreen?: () => Promise<void>;
     };
-    if (!doc.fullscreenElement && !doc.webkitFullscreenElement) {
-      if (el.requestFullscreen) el.requestFullscreen();
-      else if (anyEl.webkitRequestFullscreen) anyEl.webkitRequestFullscreen();
+
+    const av = v as AnyVideo;
+    const ad = document as AnyDoc;
+    const isFs = !!document.fullscreenElement || !!ad.webkitFullscreenElement;
+
+    if (!isFs) {
+      if (v.requestFullscreen) {
+        v.requestFullscreen().catch(() => {});
+      } else if (av.webkitRequestFullscreen) {
+        av.webkitRequestFullscreen();
+      } else if (av.webkitEnterFullscreen) {
+        av.webkitEnterFullscreen();
+      }
     } else {
-      if (document.exitFullscreen) document.exitFullscreen();
-      else if (anyDoc.webkitExitFullscreen) anyDoc.webkitExitFullscreen();
+      if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+      else if (ad.webkitExitFullscreen) ad.webkitExitFullscreen();
     }
   };
 
@@ -85,7 +96,7 @@ const HeroSection = () => {
         </div>
       </nav>
 
-      <section ref={sectionRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0">
           <video
             ref={videoRef}
