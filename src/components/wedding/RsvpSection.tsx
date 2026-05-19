@@ -27,7 +27,26 @@ const RsvpSection = () => {
     drink_preference: "",
     need_transfer: false,
     wishes: "",
+    cannot_attend: false,
   });
+
+  const sendCannotAttend = async () => {
+    if (!survey.first_name.trim() || !survey.last_name.trim()) return;
+    setRsvpLoading(true);
+    try {
+      const res = await fetch(RSVP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...survey, cannot_attend: true, guests_count: 0 }),
+      });
+      if (res.ok) {
+        setSurvey({ ...survey, cannot_attend: true });
+        setRsvpSent(true);
+      }
+    } finally {
+      setRsvpLoading(false);
+    }
+  };
 
   return (
     <>
@@ -91,6 +110,18 @@ const RsvpSection = () => {
                         onChange={(e) => setSurvey({ ...survey, guests_count: Number(e.target.value) })}
                         className="bg-background border-border/60 font-light"
                       />
+                    </div>
+
+                    <div className="pt-2">
+                      <button
+                        type="button"
+                        onClick={sendCannotAttend}
+                        disabled={rsvpLoading || !survey.first_name.trim() || !survey.last_name.trim()}
+                        className="w-full text-sm font-light text-muted-foreground hover:text-destructive transition-colors py-3 border border-dashed rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                        <Icon name="X" size={14} />
+                        К сожалению, не смогу приехать
+                      </button>
                     </div>
                   </div>
                 )}
@@ -251,6 +282,18 @@ const RsvpSection = () => {
                   </Button>
                 )}
               </div>
+            </div>
+          ) : survey.cannot_attend ? (
+            <div className="py-16 animate-fade-in">
+              <div className="w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-6" style={{ backgroundColor: "hsl(var(--wedding-sand))", color: "hsl(var(--wedding-dark))" }}>
+                <Icon name="Heart" size={28} />
+              </div>
+              <h3 className="font-serif text-2xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}>
+                Спасибо, {survey.first_name}
+              </h3>
+              <p className="text-muted-foreground font-light max-w-sm mx-auto">
+                Жаль, что не получится встретиться. Будем рады видеть тебя в другой раз — обнимаем 🤍
+              </p>
             </div>
           ) : (
             <div className="py-16 animate-fade-in">

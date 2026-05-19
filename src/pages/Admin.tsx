@@ -15,6 +15,7 @@ const Admin = () => {
   const [saving, setSaving] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [tab, setTab] = useState<"attending" | "declined">("attending");
 
   useEffect(() => {
     const token = sessionStorage.getItem("admin_token");
@@ -79,11 +80,15 @@ const Admin = () => {
     }
   };
 
-  const totalPeople = guests.reduce(
+  const attending = guests.filter((g) => !g.cannot_attend);
+  const declined = guests.filter((g) => g.cannot_attend);
+  const visibleGuests = tab === "attending" ? attending : declined;
+
+  const totalPeople = attending.reduce(
     (sum, g) => sum + g.guests_count + (g.has_plus_one ? 1 : 0),
     0
   );
-  const needTransfer = guests.filter((g) => g.need_transfer).length;
+  const needTransfer = attending.filter((g) => g.need_transfer).length;
 
   if (!isAuthed) {
     return <AdminLoginForm onSuccess={() => setIsAuthed(true)} />;
@@ -120,10 +125,21 @@ const Admin = () => {
                 className="font-serif text-3xl font-light"
                 style={{ color: "hsl(var(--wedding-dark))" }}
               >
-                {guests.length}
+                {attending.length}
               </span>
               <p className="text-xs tracking-widest uppercase text-muted-foreground mt-1">
-                ответов
+                придут
+              </p>
+            </div>
+            <div>
+              <span
+                className="font-serif text-3xl font-light"
+                style={{ color: "hsl(var(--destructive))" }}
+              >
+                {declined.length}
+              </span>
+              <p className="text-xs tracking-widest uppercase text-muted-foreground mt-1">
+                не смогут
               </p>
             </div>
             <div>
@@ -153,6 +169,45 @@ const Admin = () => {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-10">
+        <div className="flex gap-2 mb-8 border-b">
+          <button
+            onClick={() => setTab("attending")}
+            className="px-4 py-3 text-sm tracking-widest uppercase font-light transition-colors relative"
+            style={{
+              color:
+                tab === "attending"
+                  ? "hsl(var(--wedding-dark))"
+                  : "hsl(var(--muted-foreground))",
+            }}
+          >
+            Придут ({attending.length})
+            {tab === "attending" && (
+              <div
+                className="absolute bottom-0 left-0 right-0 h-0.5"
+                style={{ backgroundColor: "hsl(var(--wedding-gold))" }}
+              />
+            )}
+          </button>
+          <button
+            onClick={() => setTab("declined")}
+            className="px-4 py-3 text-sm tracking-widest uppercase font-light transition-colors relative"
+            style={{
+              color:
+                tab === "declined"
+                  ? "hsl(var(--wedding-dark))"
+                  : "hsl(var(--muted-foreground))",
+            }}
+          >
+            Не смогут ({declined.length})
+            {tab === "declined" && (
+              <div
+                className="absolute bottom-0 left-0 right-0 h-0.5"
+                style={{ backgroundColor: "hsl(var(--destructive))" }}
+              />
+            )}
+          </button>
+        </div>
+
         {loading ? (
           <div className="text-center py-20">
             <Icon
@@ -162,20 +217,22 @@ const Admin = () => {
             />
             <p className="text-muted-foreground font-light mt-4">Загрузка...</p>
           </div>
-        ) : guests.length === 0 ? (
+        ) : visibleGuests.length === 0 ? (
           <div className="text-center py-20">
             <Icon
-              name="Users"
+              name={tab === "attending" ? "Users" : "UserX"}
               size={40}
               className="mx-auto text-muted-foreground/40 mb-4"
             />
             <p className="text-muted-foreground font-light">
-              Пока никто не подтвердил участие
+              {tab === "attending"
+                ? "Пока никто не подтвердил участие"
+                : "Никто не отказался — ура!"}
             </p>
           </div>
         ) : (
           <div className="space-y-4">
-            {guests.map((guest) => (
+            {visibleGuests.map((guest) => (
               <GuestCard
                 key={guest.id}
                 guest={guest}

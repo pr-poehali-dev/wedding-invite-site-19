@@ -29,4 +29,5 @@ export interface Guest {
   allergies: string;
   drink_preference: string;
   need_transfer: boolean;
+  cannot_attend: boolean;
 }

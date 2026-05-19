@@ -41,6 +41,7 @@ def handler(event, context):
         allergies = body.get('allergies', '').strip()
         drink_preference = body.get('drink_preference', '').strip()
         need_transfer = body.get('need_transfer', False)
+        cannot_attend = body.get('cannot_attend', False)
 
         if not first_name or not last_name:
             cur.close()
@@ -52,13 +53,14 @@ def handler(event, context):
             }
 
         cur.execute(
-            "INSERT INTO " + T + " (first_name, last_name, guests_count, wishes, has_plus_one, plus_one_name, allergies, drink_preference, need_transfer) "
-            "VALUES ('%s', '%s', %d, '%s', %s, '%s', '%s', '%s', %s) RETURNING id"
+            "INSERT INTO " + T + " (first_name, last_name, guests_count, wishes, has_plus_one, plus_one_name, allergies, drink_preference, need_transfer, cannot_attend) "
+            "VALUES ('%s', '%s', %d, '%s', %s, '%s', '%s', '%s', %s, %s) RETURNING id"
             % (
                 esc(first_name), esc(last_name), int(guests_count), esc(wishes),
                 'TRUE' if has_plus_one else 'FALSE',
                 esc(plus_one_name), esc(allergies), esc(drink_preference),
-                'TRUE' if need_transfer else 'FALSE'
+                'TRUE' if need_transfer else 'FALSE',
+                'TRUE' if cannot_attend else 'FALSE'
             )
         )
         row_id = cur.fetchone()[0]
@@ -88,7 +90,7 @@ def handler(event, context):
         for field in ['first_name', 'last_name', 'plus_one_name', 'allergies', 'drink_preference', 'wishes']:
             if field in body:
                 fields.append("%s = '%s'" % (field, esc(str(body[field]).strip())))
-        for field in ['has_plus_one', 'need_transfer']:
+        for field in ['has_plus_one', 'need_transfer', 'cannot_attend']:
             if field in body:
                 fields.append("%s = %s" % (field, 'TRUE' if body[field] else 'FALSE'))
         if 'guests_count' in body:
@@ -139,7 +141,7 @@ def handler(event, context):
 
     cur.execute(
         "SELECT id, first_name, last_name, guests_count, wishes, created_at::text, "
-        "has_plus_one, plus_one_name, allergies, drink_preference, need_transfer "
+        "has_plus_one, plus_one_name, allergies, drink_preference, need_transfer, cannot_attend "
         "FROM " + T + " ORDER BY created_at DESC"
     )
     rows = cur.fetchall()
@@ -158,7 +160,8 @@ def handler(event, context):
             'plus_one_name': r[7],
             'allergies': r[8],
             'drink_preference': r[9],
-            'need_transfer': r[10]
+            'need_transfer': r[10],
+            'cannot_attend': r[11]
         }
         for r in rows
     ]

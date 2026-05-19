@@ -1,0 +1,2 @@
+ALTER TABLE t_p14134602_wedding_invite_site_.rsvp
+ADD COLUMN IF NOT EXISTS cannot_attend BOOLEAN DEFAULT FALSE;
