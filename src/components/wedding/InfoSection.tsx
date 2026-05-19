@@ -65,7 +65,8 @@ const InfoSection = () => {
                 </div>
                 <p className="text-muted-foreground font-light ml-8">
                   Ленинградская область, Ломоносовский район,<br />
-                  Пениковское сельское поселение, д. Таменгонт
+                  Пениковское сельское поселение, д. Таменгонт,<br />
+                  Центральная улица, 39Б
                 </p>
               </div>
               <div className="mb-8">
@@ -117,7 +118,7 @@ const InfoSection = () => {
 
           <div className="overflow-hidden rounded-lg shadow-sm border border-border/50">
             <iframe
-              src="https://yandex.ru/map-widget/v1/?pt=29.544700,59.734600&z=14&l=map"
+              src="https://yandex.ru/map-widget/v1/?text=Ленинградская+область,+Ломоносовский+район,+деревня+Таменгонт,+Центральная+улица,+39Б&z=16&l=map"
               width="100%"
               height="450"
               frameBorder="0"
@@ -129,10 +130,10 @@ const InfoSection = () => {
 
           <div className="mt-8 text-center">
             <p className="text-muted-foreground font-light mb-4">
-              Ленинградская область, Ломоносовский район, д. Таменгонт
+              Ленинградская область, Ломоносовский район, д. Таменгонт, Центральная улица, 39Б
             </p>
             <a
-              href="https://yandex.ru/maps/?pt=29.544700,59.734600&z=14&l=map"
+              href="https://yandex.ru/maps/?text=Ленинградская+область,+Ломоносовский+район,+деревня+Таменгонт,+Центральная+улица,+39Б&z=16"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm tracking-widest uppercase font-light hover:opacity-60 transition-opacity"

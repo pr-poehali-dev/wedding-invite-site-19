@@ -39,7 +39,7 @@ const RsvpSection = () => {
           </h2>
           <div className="wedding-divider mb-8" />
           <p className="text-muted-foreground font-light mb-10">
-            Пожалуйста, сообщите нам о вашем присутствии до 26 апреля 2026
+            Пожалуйста, сообщите нам о вашем присутствии до 26 июля 2026
           </p>
 
           {!rsvpSent ? (
@@ -271,6 +271,17 @@ const RsvpSection = () => {
                 </p>
                 <p className="text-muted-foreground font-light leading-relaxed">
                   Если захотите поздравить нас дополнительно, будем благодарны за подарок в конверте — он поможет исполнить наши общие мечты ✨
+                </p>
+              </div>
+
+              <div className="mt-6 rounded-lg border p-5 text-center" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
+                <p className="text-sm text-muted-foreground font-light leading-relaxed">
+                  По всем вопросам Вам поможет наш свадебный организатор{" "}
+                  <span style={{ color: "hsl(var(--wedding-dark))" }} className="font-medium">Алина</span>
+                  {" "}тел.{" "}
+                  <a href="tel:+79214021208" className="font-medium hover:opacity-70 transition-opacity" style={{ color: "hsl(var(--wedding-dark))" }}>
+                    +7 921 402-12-08
+                  </a>
                 </p>
               </div>
             </div>
