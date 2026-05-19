@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/icon";
 
+const HERO_VIDEO = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/bucket/150c7e2f-b584-4ca7-bc74-28dc2b73222c.MOV";
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/files/7f7bcfe9-3e73-409e-986b-21f9bcfd686e.jpg";
 const COUPLE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/bucket/dcdaf83e-eeb9-4317-80a0-7ddc7fe2cd61.jpg";
 const CHILD_VANYA = "https://cdn.poehali.dev/files/2cf75f75-f8e9-47cf-8784-c0c9b56811c3.png";
@@ -12,6 +14,25 @@ const HeroSection = () => {
   const now = new Date();
   const diff = targetDate.getTime() - now.getTime();
   const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.volume = 0.15;
+    v.play().catch(() => {});
+  }, []);
+
+  const toggleSound = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    v.volume = 0.15;
+    setMuted(v.muted);
+    v.play().catch(() => {});
+  };
 
   return (
     <>
@@ -32,9 +53,28 @@ const HeroSection = () => {
 
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={HERO_IMAGE} alt="Wedding" className="w-full h-full object-cover" />
+          <video
+            ref={videoRef}
+            src={HERO_VIDEO}
+            poster={HERO_IMAGE}
+            autoPlay
+            loop
+            muted={muted}
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50" />
         </div>
+
+        <button
+          type="button"
+          onClick={toggleSound}
+          className="absolute top-20 right-6 z-20 w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+          title={muted ? "Включить звук" : "Выключить звук"}
+        >
+          <Icon name={muted ? "VolumeX" : "Volume2"} size={18} />
+        </button>
         <div className="relative z-10 text-center text-white px-6">
           <p className="text-sm tracking-[0.4em] uppercase font-sans font-light mb-6 opacity-0 animate-fade-in">
             Приглашение на свадьбу
