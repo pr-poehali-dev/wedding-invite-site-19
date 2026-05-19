@@ -2,6 +2,8 @@ import json
 import os
 import psycopg2
 
+T = 't_p14134602_wedding_invite_site_.rsvp'
+
 def handler(event, context):
     """Управление RSVP-ответами гостей: создание, список, редактирование, удаление"""
 
@@ -50,7 +52,7 @@ def handler(event, context):
             }
 
         cur.execute(
-            "INSERT INTO rsvp (first_name, last_name, guests_count, wishes, has_plus_one, plus_one_name, allergies, drink_preference, need_transfer) "
+            "INSERT INTO " + T + " (first_name, last_name, guests_count, wishes, has_plus_one, plus_one_name, allergies, drink_preference, need_transfer) "
             "VALUES ('%s', '%s', %d, '%s', %s, '%s', '%s', '%s', %s) RETURNING id"
             % (
                 esc(first_name), esc(last_name), int(guests_count), esc(wishes),
@@ -101,7 +103,7 @@ def handler(event, context):
                 'body': json.dumps({'error': 'Нет полей для обновления'})
             }
 
-        cur.execute("UPDATE rsvp SET %s WHERE id = %d" % (', '.join(fields), int(guest_id)))
+        cur.execute("UPDATE " + T + " SET %s WHERE id = %d" % (', '.join(fields), int(guest_id)))
         conn.commit()
         cur.close()
         conn.close()
@@ -124,7 +126,7 @@ def handler(event, context):
                 'body': json.dumps({'error': 'ID обязателен'})
             }
 
-        cur.execute("DELETE FROM rsvp WHERE id = %d" % int(guest_id))
+        cur.execute("DELETE FROM " + T + " WHERE id = %d" % int(guest_id))
         conn.commit()
         cur.close()
         conn.close()
@@ -138,7 +140,7 @@ def handler(event, context):
     cur.execute(
         "SELECT id, first_name, last_name, guests_count, wishes, created_at::text, "
         "has_plus_one, plus_one_name, allergies, drink_preference, need_transfer "
-        "FROM rsvp ORDER BY created_at DESC"
+        "FROM " + T + " ORDER BY created_at DESC"
     )
     rows = cur.fetchall()
     cur.close()
