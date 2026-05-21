@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/ui/icon";
 import AdminLoginForm from "./admin/AdminLoginForm";
 import GuestCard from "./admin/GuestCard";
@@ -16,6 +16,8 @@ const Admin = () => {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [tab, setTab] = useState<"attending" | "declined">("attending");
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem("admin_token");
@@ -29,16 +31,25 @@ const Admin = () => {
     setIsAuthed(false);
   };
 
-  const loadGuests = () => {
-    setLoading(true);
+  const loadGuests = (silent = false) => {
+    if (!silent) setLoading(true);
     fetch(RSVP_URL)
       .then((r) => r.json())
-      .then((data) => setGuests(data.guests || []))
-      .finally(() => setLoading(false));
+      .then((data) => {
+        setGuests(data.guests || []);
+        setLastUpdated(new Date());
+      })
+      .finally(() => { if (!silent) setLoading(false); });
   };
 
   useEffect(() => {
-    if (isAuthed) loadGuests();
+    if (isAuthed) {
+      loadGuests();
+      intervalRef.current = setInterval(() => loadGuests(true), 15000);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, [isAuthed]);
 
   const handleEdit = (guest: Guest) => {
@@ -113,6 +124,14 @@ const Admin = () => {
             </h1>
           </div>
           <div className="flex items-center gap-6 text-center">
+            {lastUpdated && (
+              <div className="text-center hidden sm:block">
+                <Icon name="RefreshCw" size={14} className="mx-auto text-muted-foreground/50 mb-1" />
+                <p className="text-xs text-muted-foreground/50" style={{ fontSize: "10px" }}>
+                  {lastUpdated.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                </p>
+              </div>
+            )}
             <button
               onClick={handleLogout}
               className="text-xs tracking-widest uppercase text-muted-foreground hover:text-destructive transition-colors"
