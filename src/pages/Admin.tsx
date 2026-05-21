@@ -128,7 +128,7 @@ const Admin = () => {
               <div className="text-center hidden sm:block">
                 <Icon name="RefreshCw" size={14} className="mx-auto text-muted-foreground/50 mb-1" />
                 <p className="text-xs text-muted-foreground/50" style={{ fontSize: "10px" }}>
-                  {lastUpdated.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                  {new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(lastUpdated)}
                 </p>
               </div>
             )}

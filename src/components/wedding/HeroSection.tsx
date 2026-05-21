@@ -31,7 +31,7 @@ const HeroSection = () => {
       const v = videoRef.current;
       if (!v || v.muted) return;
       const h = window.innerHeight || 1;
-      const y = window.scrollY;
+      const y = window.pageYOffset ?? window.scrollY ?? document.documentElement.scrollTop;
       const k = Math.max(0, 1 - y / h);
       v.volume = baseVolume * k;
     };

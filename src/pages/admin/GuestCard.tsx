@@ -54,10 +54,7 @@ const GuestCard = ({ guest, onEdit, onDelete }: GuestCardProps) => {
             </span>
           )}
           <span className="font-light">
-            {new Date(guest.created_at).toLocaleDateString("ru-RU", {
-              day: "numeric",
-              month: "short",
-            })}
+            {new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "short" }).format(new Date(guest.created_at))}
           </span>
           <button
             onClick={() => onEdit(guest)}
