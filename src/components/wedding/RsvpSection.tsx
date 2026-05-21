@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const RSVP_URL = "https://functions.poehali.dev/e1549638-af55-45e7-b65d-bccaecfbc611";
 
@@ -14,6 +15,7 @@ const DRINK_OPTIONS = [
 ];
 
 const RsvpSection = () => {
+  const { content } = useSiteContent();
   const [rsvpSent, setRsvpSent] = useState(false);
   const [rsvpLoading, setRsvpLoading] = useState(false);
   const [step, setStep] = useState(0);
@@ -58,7 +60,7 @@ const RsvpSection = () => {
           </h2>
           <div className="wedding-divider mb-8" />
           <p className="text-muted-foreground font-light mb-4">
-            Пожалуйста, сообщите нам о вашем присутствии до 26 июля 2026
+            Пожалуйста, сообщите нам о вашем присутствии до {content.rsvp_deadline}
           </p>
 
           <div className="rounded-xl px-5 py-4 mb-6 text-sm" style={{ backgroundColor: "hsl(var(--wedding-dark))", color: "hsl(var(--wedding-cream))" }}>
@@ -72,8 +74,8 @@ const RsvpSection = () => {
             <Icon name="Phone" size={16} style={{ color: "hsl(var(--wedding-gold))" }} />
             <span style={{ color: "hsl(var(--wedding-dark))" }}>
               По всем вопросам — свадебный организатор{" "}
-              <a href="tel:+79214021208" className="font-medium hover:underline" style={{ color: "hsl(var(--wedding-dark))" }}>
-                Алина +7-921-402-12-08
+              <a href={`tel:${content.organizer_phone.replace(/[^+\d]/g, "")}`} className="font-medium hover:underline" style={{ color: "hsl(var(--wedding-dark))" }}>
+                {content.organizer_name} {content.organizer_phone}
               </a>
             </span>
           </div>
@@ -336,10 +338,7 @@ const RsvpSection = () => {
                   Дорогие друзья и близкие 🤍
                 </p>
                 <p className="text-muted-foreground font-light leading-relaxed">
-                  Пожалуйста, не дарите нам цветы — к сожалению, после торжества у нас не будет возможности забрать их домой, и мы переживаем, что они не успеют нас порадовать 🌷
-                </p>
-                <p className="text-muted-foreground font-light leading-relaxed">
-                  Если захотите поздравить нас дополнительно, будем благодарны за подарок в конверте — он поможет исполнить наши общие мечты ✨
+                  {content.no_flowers_text}
                 </p>
               </div>
 
@@ -360,10 +359,10 @@ const RsvpSection = () => {
               <div className="mt-6 rounded-lg border p-5 text-center" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
                 <p className="text-sm text-muted-foreground font-light leading-relaxed">
                   По всем вопросам Вам поможет наш свадебный организатор{" "}
-                  <span style={{ color: "hsl(var(--wedding-dark))" }} className="font-medium">Алина</span>
+                  <span style={{ color: "hsl(var(--wedding-dark))" }} className="font-medium">{content.organizer_name}</span>
                   {" "}тел.{" "}
-                  <a href="tel:+79214021208" className="font-medium hover:opacity-70 transition-opacity" style={{ color: "hsl(var(--wedding-dark))" }}>
-                    +7 921 402-12-08
+                  <a href={`tel:${content.organizer_phone.replace(/[^+\d]/g, "")}`} className="font-medium hover:opacity-70 transition-opacity" style={{ color: "hsl(var(--wedding-dark))" }}>
+                    {content.organizer_phone}
                   </a>
                 </p>
               </div>
@@ -373,8 +372,10 @@ const RsvpSection = () => {
       </section>
 
       <footer className="py-12 text-center border-t" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
-        <p className="font-serif text-3xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}>В & Н</p>
-        <p className="text-sm text-muted-foreground font-light tracking-widest">26 . 08 . 2026</p>
+        <p className="font-serif text-3xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}>
+          {content.groom_name.charAt(0)} & {content.bride_name.charAt(0)}
+        </p>
+        <p className="text-sm text-muted-foreground font-light tracking-widest">{content.wedding_date_label}</p>
         <div className="flex justify-center gap-4 mt-6">
           <a href="#" className="text-muted-foreground hover:opacity-60 transition-opacity">
             <Icon name="Instagram" size={18} />

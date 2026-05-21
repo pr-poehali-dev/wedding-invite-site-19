@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "GET site content",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"content": {}},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

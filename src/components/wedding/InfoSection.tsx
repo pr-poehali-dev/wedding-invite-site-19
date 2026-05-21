@@ -1,14 +1,27 @@
 import Icon from "@/components/ui/icon";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
-const VENUE_IMAGE = "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/bucket/c87026a8-47d6-4d33-8b9a-d9a21ffd7d42.jpg";
-
-const schedule = [
-  { time: "14:00", title: "Сбор гостей + фуршет", desc: "Встреча гостей, лёгкие закуски и шампанское", icon: "Users" },
-  { time: "15:00", title: "Выездная церемония", desc: "Торжественная регистрация брака", icon: "Heart" },
-  { time: "16:00", title: "Банкет", desc: "Праздничный ужин и веселье", icon: "Utensils" },
-];
+interface ScheduleItem {
+  time: string;
+  title: string;
+  desc: string;
+  icon: string;
+}
 
 const InfoSection = () => {
+  const { content } = useSiteContent();
+
+  let schedule: ScheduleItem[] = [];
+  try {
+    schedule = JSON.parse(content.schedule);
+  } catch {
+    schedule = [];
+  }
+
+  const dresscodeColors = content.dresscode_colors.split(",").map((c) => c.trim()).filter(Boolean);
+
+  const mapQuery = encodeURIComponent(content.venue_address);
+
   return (
     <>
       <section id="schedule" className="py-24 md:py-32" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
@@ -56,7 +69,7 @@ const InfoSection = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <img src={VENUE_IMAGE} alt="Venue" className="w-full aspect-[4/3] object-cover" />
+            <img src={content.venue_image_url} alt="Venue" className="w-full aspect-[4/3] object-cover" />
             <div>
               <div className="mb-8">
                 <div className="flex items-center gap-3 mb-3">
@@ -64,9 +77,7 @@ const InfoSection = () => {
                   <h3 className="font-serif text-xl" style={{ color: "hsl(var(--wedding-dark))" }}>Адрес</h3>
                 </div>
                 <p className="text-muted-foreground font-light ml-8">
-                  Ленинградская область, Ломоносовский район,<br />
-                  Пениковское сельское поселение, д. Таменгонт,<br />
-                  Центральная улица, 39Б
+                  {content.venue_address}
                 </p>
               </div>
               <div className="mb-8">
@@ -75,7 +86,7 @@ const InfoSection = () => {
                   <h3 className="font-serif text-xl" style={{ color: "hsl(var(--wedding-dark))" }}>Дата</h3>
                 </div>
                 <p className="text-muted-foreground font-light ml-8">
-                  26 августа 2026, среда<br />
+                  {content.wedding_date_label}<br />
                   Начало церемонии в 15:00
                 </p>
               </div>
@@ -85,21 +96,23 @@ const InfoSection = () => {
                   <h3 className="font-serif text-xl" style={{ color: "hsl(var(--wedding-dark))" }}>Дресс-код</h3>
                 </div>
                 <p className="text-muted-foreground font-light ml-8 mb-1">
-                  Коктейльный / кэжуал
+                  {content.dresscode}
                 </p>
                 <p className="text-muted-foreground font-light ml-8 text-sm mb-3">
                   Мужчинам: тёмный низ и светлая рубашка или поло
                 </p>
-                <div className="flex items-center gap-3 ml-8">
-                  {["#3FA38D", "#FFF990", "#89D5DB", "#3295F7", "#4D3407"].map((color) => (
-                    <div
-                      key={color}
-                      className="w-8 h-8 rounded-full border border-border/50 shadow-sm"
-                      style={{ backgroundColor: color }}
-                      title={color}
-                    />
-                  ))}
-                </div>
+                {dresscodeColors.length > 0 && (
+                  <div className="flex items-center gap-3 ml-8">
+                    {dresscodeColors.map((color) => (
+                      <div
+                        key={color}
+                        className="w-8 h-8 rounded-full border border-border/50 shadow-sm"
+                        style={{ backgroundColor: color }}
+                        title={color}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -118,22 +131,22 @@ const InfoSection = () => {
 
           <div className="overflow-hidden rounded-lg shadow-sm border border-border/50">
             <iframe
-              src="https://yandex.ru/map-widget/v1/?text=Ленинградская+область,+Ломоносовский+район,+деревня+Таменгонт,+Центральная+улица,+39Б&z=16&l=map"
+              src={`https://yandex.ru/map-widget/v1/?text=${mapQuery}&z=16&l=map`}
               width="100%"
               height="450"
               frameBorder="0"
               style={{ border: 0, display: "block" }}
               allowFullScreen
-              title="Карта — деревня Таменгонт"
+              title={`Карта — ${content.venue_name}`}
             />
           </div>
 
           <div className="mt-8 text-center">
             <p className="text-muted-foreground font-light mb-4">
-              Ленинградская область, Ломоносовский район, д. Таменгонт, Центральная улица, 39Б
+              {content.venue_address}
             </p>
             <a
-              href="https://yandex.ru/maps/?text=Ленинградская+область,+Ломоносовский+район,+деревня+Таменгонт,+Центральная+улица,+39Б&z=16"
+              href={`https://yandex.ru/maps/?text=${mapQuery}&z=16`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm tracking-widest uppercase font-light hover:opacity-60 transition-opacity"

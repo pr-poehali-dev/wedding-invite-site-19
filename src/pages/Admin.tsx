@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import AdminLoginForm from "./admin/AdminLoginForm";
 import GuestCard from "./admin/GuestCard";
 import { EditGuestDialog, DeleteConfirmDialog } from "./admin/GuestDialogs";
+import SiteEditor from "./admin/SiteEditor";
 import { Guest, RSVP_URL } from "./admin/types";
 
 const Admin = () => {
@@ -16,6 +17,7 @@ const Admin = () => {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [tab, setTab] = useState<"attending" | "declined">("attending");
+  const [adminSection, setAdminSection] = useState<"guests" | "site">("guests");
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -116,12 +118,23 @@ const Admin = () => {
             >
               ← На сайт
             </a>
-            <h1
-              className="font-serif text-3xl mt-2"
-              style={{ color: "hsl(var(--wedding-dark))" }}
-            >
-              Список гостей
-            </h1>
+            <div className="flex items-center gap-3 mt-2">
+              <button
+                onClick={() => setAdminSection("guests")}
+                className="font-serif text-3xl transition-opacity"
+                style={{ color: "hsl(var(--wedding-dark))", opacity: adminSection === "guests" ? 1 : 0.35 }}
+              >
+                Гости
+              </button>
+              <span className="text-muted-foreground/40 font-serif text-3xl">/</span>
+              <button
+                onClick={() => setAdminSection("site")}
+                className="font-serif text-3xl transition-opacity"
+                style={{ color: "hsl(var(--wedding-dark))", opacity: adminSection === "site" ? 1 : 0.35 }}
+              >
+                Сайт
+              </button>
+            </div>
           </div>
           <div className="flex items-center gap-6 text-center">
             {lastUpdated && (
@@ -188,78 +201,57 @@ const Admin = () => {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-10">
-        <div className="flex gap-2 mb-8 border-b">
-          <button
-            onClick={() => setTab("attending")}
-            className="px-4 py-3 text-sm tracking-widest uppercase font-light transition-colors relative"
-            style={{
-              color:
-                tab === "attending"
-                  ? "hsl(var(--wedding-dark))"
-                  : "hsl(var(--muted-foreground))",
-            }}
-          >
-            Придут ({attending.length})
-            {tab === "attending" && (
-              <div
-                className="absolute bottom-0 left-0 right-0 h-0.5"
-                style={{ backgroundColor: "hsl(var(--wedding-gold))" }}
-              />
+        {adminSection === "site" && (
+          <SiteEditor token={sessionStorage.getItem("admin_token") ?? ""} />
+        )}
+        {adminSection === "guests" && (
+          <>
+            <div className="flex gap-2 mb-8 border-b">
+              <button
+                onClick={() => setTab("attending")}
+                className="px-4 py-3 text-sm tracking-widest uppercase font-light transition-colors relative"
+                style={{
+                  color: tab === "attending" ? "hsl(var(--wedding-dark))" : "hsl(var(--muted-foreground))",
+                }}
+              >
+                Придут ({attending.length})
+                {tab === "attending" && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ backgroundColor: "hsl(var(--wedding-gold))" }} />
+                )}
+              </button>
+              <button
+                onClick={() => setTab("declined")}
+                className="px-4 py-3 text-sm tracking-widest uppercase font-light transition-colors relative"
+                style={{
+                  color: tab === "declined" ? "hsl(var(--wedding-dark))" : "hsl(var(--muted-foreground))",
+                }}
+              >
+                Не смогут ({declined.length})
+                {tab === "declined" && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ backgroundColor: "hsl(var(--destructive))" }} />
+                )}
+              </button>
+            </div>
+            {loading ? (
+              <div className="text-center py-20">
+                <Icon name="Loader2" size={28} className="animate-spin mx-auto text-muted-foreground" />
+                <p className="text-muted-foreground font-light mt-4">Загрузка...</p>
+              </div>
+            ) : visibleGuests.length === 0 ? (
+              <div className="text-center py-20">
+                <Icon name={tab === "attending" ? "Users" : "UserX"} size={40} className="mx-auto text-muted-foreground/40 mb-4" />
+                <p className="text-muted-foreground font-light">
+                  {tab === "attending" ? "Пока никто не подтвердил участие" : "Никто не отказался — ура!"}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {visibleGuests.map((guest) => (
+                  <GuestCard key={guest.id} guest={guest} onEdit={handleEdit} onDelete={(id) => setDeleteId(id)} />
+                ))}
+              </div>
             )}
-          </button>
-          <button
-            onClick={() => setTab("declined")}
-            className="px-4 py-3 text-sm tracking-widest uppercase font-light transition-colors relative"
-            style={{
-              color:
-                tab === "declined"
-                  ? "hsl(var(--wedding-dark))"
-                  : "hsl(var(--muted-foreground))",
-            }}
-          >
-            Не смогут ({declined.length})
-            {tab === "declined" && (
-              <div
-                className="absolute bottom-0 left-0 right-0 h-0.5"
-                style={{ backgroundColor: "hsl(var(--destructive))" }}
-              />
-            )}
-          </button>
-        </div>
-
-        {loading ? (
-          <div className="text-center py-20">
-            <Icon
-              name="Loader2"
-              size={28}
-              className="animate-spin mx-auto text-muted-foreground"
-            />
-            <p className="text-muted-foreground font-light mt-4">Загрузка...</p>
-          </div>
-        ) : visibleGuests.length === 0 ? (
-          <div className="text-center py-20">
-            <Icon
-              name={tab === "attending" ? "Users" : "UserX"}
-              size={40}
-              className="mx-auto text-muted-foreground/40 mb-4"
-            />
-            <p className="text-muted-foreground font-light">
-              {tab === "attending"
-                ? "Пока никто не подтвердил участие"
-                : "Никто не отказался — ура!"}
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {visibleGuests.map((guest) => (
-              <GuestCard
-                key={guest.id}
-                guest={guest}
-                onEdit={handleEdit}
-                onDelete={(id) => setDeleteId(id)}
-              />
-            ))}
-          </div>
+          </>
         )}
       </main>
 
