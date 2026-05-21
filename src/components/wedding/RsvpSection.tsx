@@ -68,7 +68,7 @@ const RsvpSection = () => {
             </p>
           </div>
 
-          <div className="flex items-center justify-center gap-3 rounded-xl border px-5 py-4 mb-8 text-sm font-light" style={{ backgroundColor: "white", borderColor: "hsla(var(--wedding-gold), 0.4)" }}>
+          <div className="flex items-center justify-center gap-3 rounded-xl border px-5 py-4 mb-8 text-sm font-light" style={{ backgroundColor: "white", borderColor: "rgba(var(--wedding-gold-rgb), 0.4)" }}>
             <Icon name="Phone" size={16} style={{ color: "hsl(var(--wedding-gold))" }} />
             <span style={{ color: "hsl(var(--wedding-dark))" }}>
               По всем вопросам — свадебный организатор{" "}
@@ -79,14 +79,14 @@ const RsvpSection = () => {
           </div>
 
           {!rsvpSent ? (
-            <div className="text-left bg-white rounded-2xl border p-6 md:p-8 shadow-sm" style={{ borderColor: "hsla(var(--wedding-gold), 0.2)" }}>
+            <div className="text-left bg-white rounded-2xl border p-6 md:p-8 shadow-sm" style={{ borderColor: "rgba(var(--wedding-gold-rgb), 0.2)" }}>
               <div className="flex justify-center gap-2 mb-10">
                 {[0, 1, 2, 3].map((s) => (
                   <div
                     key={s}
                     className="h-1.5 rounded-full transition-all duration-500"
                     style={{
-                      width: s <= step ? 40 : 24,
+                      width: s <= step ? "40px" : "24px",
                       backgroundColor: s <= step ? "hsl(var(--wedding-gold))" : "hsl(var(--border))",
                     }}
                   />
