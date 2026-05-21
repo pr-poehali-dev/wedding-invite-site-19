@@ -299,7 +299,20 @@ const RsvpSection = () => {
                 <Icon name="Heart" size={28} />
               </div>
               <h3 className="font-serif text-2xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}></h3>
-              <p className="text-muted-foreground font-light max-w-sm mx-auto">Понимаем, очень жаль, конечно, что не получится увидеться в такой день. Но спасибо что предупредил(а) 🤍 Будем скучать!</p>
+              <p className="text-muted-foreground font-light max-w-sm mx-auto mb-8">Понимаем, очень жаль, конечно, что не получится увидеться в такой день. Но спасибо что предупредил(а) 🤍 Будем скучать!</p>
+              <a
+                href="SURVEY_LINK_HERE"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-4 rounded-xl border-2 px-6 py-5 transition-all hover:opacity-80 active:scale-95 max-w-sm mx-auto"
+                style={{ borderColor: "hsl(var(--wedding-gold))", backgroundColor: "white" }}
+              >
+                <div className="text-left">
+                  <p className="font-medium text-sm mb-1" style={{ color: "hsl(var(--wedding-dark))" }}>Пройдите небольшой опрос</p>
+                  <p className="text-xs font-light text-muted-foreground">Это займёт 1–2 минуты и очень поможет нам</p>
+                </div>
+                <Icon name="ExternalLink" size={18} style={{ color: "hsl(var(--wedding-gold))", flexShrink: 0 }} />
+              </a>
             </div>
           ) : (
             <div className="py-16 animate-fade-in">
@@ -322,6 +335,20 @@ const RsvpSection = () => {
                   Если захотите поздравить нас дополнительно, будем благодарны за подарок в конверте — он поможет исполнить наши общие мечты ✨
                 </p>
               </div>
+
+              <a
+                href="SURVEY_LINK_HERE"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 flex items-center justify-between gap-4 rounded-xl border-2 px-6 py-5 transition-all hover:opacity-80 active:scale-95"
+                style={{ borderColor: "hsl(var(--wedding-gold))", backgroundColor: "white" }}
+              >
+                <div className="text-left">
+                  <p className="font-medium text-sm mb-1" style={{ color: "hsl(var(--wedding-dark))" }}>Пройдите небольшой опрос</p>
+                  <p className="text-xs font-light text-muted-foreground">Это займёт 1–2 минуты и очень поможет нам</p>
+                </div>
+                <Icon name="ExternalLink" size={18} style={{ color: "hsl(var(--wedding-gold))", flexShrink: 0 }} />
+              </a>
 
               <div className="mt-6 rounded-lg border p-5 text-center" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
                 <p className="text-sm text-muted-foreground font-light leading-relaxed">
