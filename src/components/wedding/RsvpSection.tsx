@@ -56,7 +56,7 @@ const RsvpSection = () => {
         <div className="max-w-lg mx-auto px-6 text-center">
           <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4">Ждём вас</p>
           <h2 className="font-serif text-4xl md:text-5xl font-light mb-4" style={{ color: "hsl(var(--wedding-dark))" }}>
-            Подтвердите участие
+            {content.rsvp_section_title}
           </h2>
           <div className="wedding-divider mb-8" />
           <p className="text-muted-foreground font-light mb-4">
@@ -66,7 +66,7 @@ const RsvpSection = () => {
           <div className="rounded-xl px-5 py-4 mb-6 text-sm" style={{ backgroundColor: "hsl(var(--wedding-dark))", color: "hsl(var(--wedding-cream))" }}>
             <p className="font-medium tracking-wide mb-1">Важно — заполняет каждый гость отдельно</p>
             <p className="font-light opacity-80 text-xs leading-relaxed">
-              Форму должен пройти каждый приглашённый лично, даже если вы приедете вместе. Это поможет нам точно подготовиться к празднику.
+              {content.rsvp_important_note}
             </p>
           </div>
 
@@ -331,7 +331,7 @@ const RsvpSection = () => {
               <h3 className="font-serif text-2xl mb-2" style={{ color: "hsl(var(--wedding-dark))" }}>
                 Спасибо, {survey.first_name}!
               </h3>
-              <p className="text-muted-foreground font-light mb-10">Мы с нетерпением ждём встречи с вами</p>
+              <p className="text-muted-foreground font-light mb-10">{content.rsvp_confirm_text}</p>
 
               <div className="text-left rounded-lg border p-6 space-y-4" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
                 <p className="font-light leading-relaxed" style={{ color: "hsl(var(--wedding-dark))" }}>
@@ -340,6 +340,11 @@ const RsvpSection = () => {
                 <p className="text-muted-foreground font-light leading-relaxed">
                   {content.no_flowers_text}
                 </p>
+                {content.no_flowers_extra && (
+                  <p className="text-muted-foreground font-light leading-relaxed">
+                    {content.no_flowers_extra}
+                  </p>
+                )}
               </div>
 
               <a

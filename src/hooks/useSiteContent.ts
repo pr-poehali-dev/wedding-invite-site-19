@@ -8,14 +8,23 @@ export interface SiteContent {
   wedding_date: string;
   wedding_date_label: string;
   about_text: string;
+  about_section_label: string;
+  about_section_title: string;
   venue_address: string;
   venue_name: string;
   dresscode: string;
+  dresscode_hint: string;
   dresscode_colors: string;
   rsvp_deadline: string;
+  rsvp_section_title: string;
+  rsvp_important_note: string;
+  rsvp_confirm_text: string;
+  no_flowers_text: string;
+  no_flowers_extra: string;
   organizer_name: string;
   organizer_phone: string;
-  no_flowers_text: string;
+  ceremony_time_label: string;
+  hero_tagline: string;
   schedule: string;
   hero_video_url: string;
   hero_image_url: string;
@@ -34,14 +43,23 @@ export const DEFAULT_CONTENT: SiteContent = {
   wedding_date: "2026-08-26T15:00:00",
   wedding_date_label: "26 августа 2026",
   about_text: "Дорогие друзья и родные! Мы рады сообщить вам о самом важном дне в нашей жизни. Будем счастливы разделить этот прекрасный момент с каждым из вас.",
+  about_section_label: "Наша история",
+  about_section_title: "О событии",
   venue_address: "Ленинградская область, Ломоносовский район, деревня Таменгонт, Центральная улица, 39Б",
   venue_name: "Таменгонт",
   dresscode: "коктейльный / кэжуал",
+  dresscode_hint: "Мужчинам: тёмный низ и светлая рубашка или поло",
   dresscode_colors: "#3FA38D,#FFF990,#89D5DB,#3295F7,#4D3407",
   rsvp_deadline: "26 июля 2026",
+  rsvp_section_title: "Подтвердите участие",
+  rsvp_important_note: "Форму должен пройти каждый приглашённый лично, даже если вы приедете вместе. Это поможет нам точно подготовиться к празднику.",
+  rsvp_confirm_text: "Мы с нетерпением ждём встречи с вами",
+  no_flowers_text: "Пожалуйста, не дарите нам цветы — к сожалению, после торжества у нас не будет возможности забрать их домой, и мы переживаем, что они не успеют нас порадовать 🌷",
+  no_flowers_extra: "Если захотите поздравить нас дополнительно, будем благодарны за подарок в конверте — он поможет исполнить наши общие мечты ✨",
   organizer_name: "Алина",
   organizer_phone: "+7-921-402-12-08",
-  no_flowers_text: "Пожалуйста, не дарите цветы — лучше порадуйте нас тёплыми словами и хорошим настроением!",
+  ceremony_time_label: "Начало церемонии в 15:00",
+  hero_tagline: "Приглашение на свадьбу",
   schedule: '[{"time":"14:00","title":"Сбор гостей + фуршет","desc":"Встреча гостей, лёгкие закуски и шампанское","icon":"Users"},{"time":"15:00","title":"Выездная церемония","desc":"Торжественная регистрация брака","icon":"Heart"},{"time":"16:00","title":"Банкет","desc":"Праздничный ужин и веселье","icon":"Utensils"}]',
   hero_video_url: "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/bucket/150c7e2f-b584-4ca7-bc74-28dc2b73222c.MOV",
   hero_image_url: "https://cdn.poehali.dev/projects/5a3fdc4a-192c-44f8-bed7-676fcfabf9f6/files/7f7bcfe9-3e73-409e-986b-21f9bcfd686e.jpg",
@@ -94,4 +112,25 @@ export async function saveSiteContent(updates: Partial<SiteContent>, token: stri
     cachedContent = null;
   }
   return res.ok;
+}
+
+export async function uploadFile(file: File, token: string): Promise<string | null> {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64 = (reader.result as string).split(",")[1];
+      const res = await fetch(SITE_CONTENT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Admin-Token": token },
+        body: JSON.stringify({ file: base64, filename: file.name }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        resolve(data.url ?? null);
+      } else {
+        resolve(null);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
 }

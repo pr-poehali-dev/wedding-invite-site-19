@@ -132,7 +132,7 @@ const HeroSection = () => {
 
         <div className="relative z-10 text-center text-white px-6">
           <p className="text-sm tracking-[0.4em] uppercase font-sans font-light mb-6 opacity-0 animate-fade-in">
-            Приглашение на свадьбу
+            {content.hero_tagline}
           </p>
           <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-light mb-4 opacity-0 animate-fade-in animate-delay-200">
             {content.groom_name}
@@ -175,9 +175,9 @@ const HeroSection = () => {
       <section id="about" className="py-24 md:py-32">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-16">
-            <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4">Наша история</p>
+            <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4">{content.about_section_label}</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light mb-4" style={{ color: "hsl(var(--wedding-dark))" }}>
-              О событии
+              {content.about_section_title}
             </h2>
             <div className="wedding-divider mb-8" />
             <p className="leading-relaxed text-muted-foreground font-light max-w-xl mx-auto">

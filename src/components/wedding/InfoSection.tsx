@@ -87,7 +87,7 @@ const InfoSection = () => {
                 </div>
                 <p className="text-muted-foreground font-light ml-8">
                   {content.wedding_date_label}<br />
-                  Начало церемонии в 15:00
+                  {content.ceremony_time_label}
                 </p>
               </div>
               <div>
@@ -98,9 +98,11 @@ const InfoSection = () => {
                 <p className="text-muted-foreground font-light ml-8 mb-1">
                   {content.dresscode}
                 </p>
-                <p className="text-muted-foreground font-light ml-8 text-sm mb-3">
-                  Мужчинам: тёмный низ и светлая рубашка или поло
-                </p>
+                {content.dresscode_hint && (
+                  <p className="text-muted-foreground font-light ml-8 text-sm mb-3">
+                    {content.dresscode_hint}
+                  </p>
+                )}
                 {dresscodeColors.length > 0 && (
                   <div className="flex items-center gap-3 ml-8">
                     {dresscodeColors.map((color) => (
