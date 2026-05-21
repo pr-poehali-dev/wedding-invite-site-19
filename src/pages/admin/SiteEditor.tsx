@@ -110,7 +110,7 @@ function ImageUploadField({
   );
 }
 
-type TabId = "main" | "texts" | "schedule" | "media" | "contacts";
+type TabId = "main" | "texts" | "schedule" | "media" | "contacts" | "system";
 
 export default function SiteEditor({ token }: SiteEditorProps) {
   const [form, setForm] = useState<SiteContent>(DEFAULT_CONTENT);
@@ -119,6 +119,9 @@ export default function SiteEditor({ token }: SiteEditorProps) {
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabId>("main");
+  const [userPwd, setUserPwd] = useState("");
+  const [userPwdSaving, setUserPwdSaving] = useState(false);
+  const [userPwdSaved, setUserPwdSaved] = useState(false);
 
   useEffect(() => {
     fetch(SITE_CONTENT_URL)
@@ -153,12 +156,21 @@ export default function SiteEditor({ token }: SiteEditorProps) {
   const updateScheduleItem = (i: number, field: keyof ScheduleItem, val: string) =>
     setSchedule((s) => s.map((item, idx) => (idx === i ? { ...item, [field]: val } : item)));
 
+  const handleSaveUserPassword = async () => {
+    if (!userPwd.trim()) return;
+    setUserPwdSaving(true);
+    const ok = await saveSiteContent({ user_password: userPwd.trim() }, token);
+    setUserPwdSaving(false);
+    if (ok) { setUserPwd(""); setUserPwdSaved(true); setTimeout(() => setUserPwdSaved(false), 3000); }
+  };
+
   const tabs: { id: TabId; label: string; icon: string }[] = [
     { id: "main", label: "Основное", icon: "Settings2" },
     { id: "texts", label: "Тексты", icon: "Type" },
     { id: "schedule", label: "Расписание", icon: "Clock" },
     { id: "media", label: "Фото и видео", icon: "Image" },
     { id: "contacts", label: "Контакты", icon: "Phone" },
+    { id: "system", label: "Система", icon: "ShieldCheck" },
   ];
 
   if (loading) {
@@ -330,6 +342,50 @@ export default function SiteEditor({ token }: SiteEditorProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Field label="Имя организатора" value={form.organizer_name} onChange={set("organizer_name")} placeholder="Алина" />
               <Field label="Телефон организатора" value={form.organizer_phone} onChange={set("organizer_phone")} placeholder="+7-921-402-12-08" />
+            </div>
+          </div>
+        )}
+
+        {activeTab === "system" && (
+          <div className="space-y-6">
+            <div className="rounded-lg border border-border p-5 space-y-4" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
+              <div className="flex items-start gap-3">
+                <Icon name="UserCheck" size={18} className="mt-0.5 shrink-0" style={{ color: "hsl(var(--wedding-dark))" }} />
+                <div>
+                  <p className="text-sm font-medium" style={{ color: "hsl(var(--wedding-dark))" }}>Учётная запись «Гости»</p>
+                  <p className="text-xs text-muted-foreground font-light mt-0.5">
+                    Логин: <span className="font-mono">user</span> — только просмотр списка гостей, без редактирования и без вкладки «Сайт»
+                  </p>
+                </div>
+              </div>
+              <div>
+                <Label>Новый пароль для «Гости»</Label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={userPwd}
+                    onChange={(e) => setUserPwd(e.target.value)}
+                    placeholder="Введите новый пароль"
+                    className="flex-1 border border-border rounded-md px-3 py-2 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring"
+                  />
+                  <button
+                    onClick={handleSaveUserPassword}
+                    disabled={userPwdSaving || !userPwd.trim()}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-md text-sm tracking-widest uppercase transition-colors disabled:opacity-50 whitespace-nowrap"
+                    style={{ backgroundColor: "hsl(var(--wedding-dark))", color: "hsl(var(--wedding-cream))" }}
+                  >
+                    {userPwdSaving
+                      ? <Icon name="Loader2" size={14} className="animate-spin" />
+                      : <Icon name="Save" size={14} />}
+                    Сохранить
+                  </button>
+                </div>
+                {userPwdSaved && (
+                  <p className="flex items-center gap-1.5 text-sm text-green-600 mt-2">
+                    <Icon name="CheckCircle" size={14} /> Пароль обновлён
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         )}

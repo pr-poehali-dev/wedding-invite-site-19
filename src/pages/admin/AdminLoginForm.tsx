@@ -5,14 +5,16 @@ import { Input } from "@/components/ui/input";
 import { AUTH_URL } from "./types";
 
 interface AdminLoginFormProps {
-  onSuccess: () => void;
+  onSuccess: (role: "admin" | "user") => void;
 }
 
 const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
-  const [login, setLogin] = useState("admin");
+  const [role, setRole] = useState<"admin" | "user">("admin");
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
+
+  const login = role === "admin" ? "admin" : "user";
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +29,8 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
       const data = await res.json();
       if (res.ok && data.success) {
         sessionStorage.setItem("admin_token", data.token);
-        onSuccess();
+        sessionStorage.setItem("admin_role", data.role);
+        onSuccess(data.role);
       } else {
         setAuthError(data.error || "Ошибка авторизации");
       }
@@ -52,24 +55,30 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
             className="mx-auto mb-3"
             style={{ color: "hsl(var(--wedding-gold))" }}
           />
-          <h1
-            className="font-serif text-2xl"
-            style={{ color: "hsl(var(--wedding-dark))" }}
-          >
-            Вход в админку
+          <h1 className="font-serif text-2xl" style={{ color: "hsl(var(--wedding-dark))" }}>
+            Вход
           </h1>
         </div>
+
+        <div className="flex rounded-lg overflow-hidden border border-border mb-5">
+          {(["admin", "user"] as const).map((r) => (
+            <button
+              key={r}
+              type="button"
+              onClick={() => { setRole(r); setPassword(""); setAuthError(""); }}
+              className="flex-1 py-2 text-xs tracking-widest uppercase transition-colors"
+              style={
+                role === r
+                  ? { backgroundColor: "hsl(var(--wedding-dark))", color: "hsl(var(--wedding-cream))" }
+                  : { backgroundColor: "transparent", color: "hsl(var(--muted-foreground))" }
+              }
+            >
+              {r === "admin" ? "Администратор" : "Гости"}
+            </button>
+          ))}
+        </div>
+
         <div className="space-y-4">
-          <div>
-            <label className="text-xs tracking-widest uppercase text-muted-foreground mb-1 block">
-              Логин
-            </label>
-            <Input
-              value={login}
-              onChange={(e) => setLogin(e.target.value)}
-              placeholder="admin"
-            />
-          </div>
           <div>
             <label className="text-xs tracking-widest uppercase text-muted-foreground mb-1 block">
               Пароль

@@ -119,6 +119,19 @@ def handler(event, context):
     if method == 'DELETE':
         params = event.get('queryStringParameters') or {}
         guest_id = params.get('id')
+        delete_all = params.get('all') == 'true'
+
+        if delete_all:
+            cur.execute("DELETE FROM " + T)
+            conn.commit()
+            cur.close()
+            conn.close()
+            return {
+                'statusCode': 200,
+                'headers': headers,
+                'body': json.dumps({'success': True, 'deleted': 'all'})
+            }
+
         if not guest_id:
             cur.close()
             conn.close()

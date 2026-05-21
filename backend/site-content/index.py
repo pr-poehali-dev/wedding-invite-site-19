@@ -105,6 +105,8 @@ def handler(event, context):
                 'body': json.dumps({'error': 'Не авторизован'})
             }
 
+        role = token.rsplit('.', 1)[-1] if '.' in token else ''
+
         body = json.loads(event.get('body', '{}'))
         updates = body.get('updates', {})
 
@@ -113,6 +115,14 @@ def handler(event, context):
                 'statusCode': 400,
                 'headers': JSON_HEADERS,
                 'body': json.dumps({'error': 'Нет данных для обновления'})
+            }
+
+        # только admin может менять user_password
+        if role != 'admin' and 'user_password' in updates:
+            return {
+                'statusCode': 403,
+                'headers': JSON_HEADERS,
+                'body': json.dumps({'error': 'Нет доступа'})
             }
 
         conn = psycopg2.connect(os.environ['DATABASE_URL'])

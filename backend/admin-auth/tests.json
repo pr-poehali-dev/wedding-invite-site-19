@@ -7,11 +7,11 @@
       "expectedStatus": 200
     },
     {
-      "name": "POST with wrong credentials returns error",
+      "name": "POST with wrong credentials returns 401",
       "method": "POST",
       "path": "/",
       "body": {"login": "wrong", "password": "wrong"},
-      "expectedStatus": 500,
+      "expectedStatus": 401,
       "expectedBody": {"error": "string"},
       "bodyMatcher": "partial"
     },

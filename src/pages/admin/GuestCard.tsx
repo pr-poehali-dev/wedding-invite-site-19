@@ -3,8 +3,8 @@ import { Guest, DRINK_LABELS } from "./types";
 
 interface GuestCardProps {
   guest: Guest;
-  onEdit: (guest: Guest) => void;
-  onDelete: (id: number) => void;
+  onEdit?: (guest: Guest) => void;
+  onDelete?: (id: number) => void;
 }
 
 const GuestCard = ({ guest, onEdit, onDelete }: GuestCardProps) => {
@@ -56,20 +56,24 @@ const GuestCard = ({ guest, onEdit, onDelete }: GuestCardProps) => {
           <span className="font-light">
             {new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "short" }).format(new Date(guest.created_at))}
           </span>
-          <button
-            onClick={() => onEdit(guest)}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-background hover:bg-accent transition-colors cursor-pointer"
-            title="Редактировать"
-          >
-            <Icon name="Pencil" size={12} />
-          </button>
-          <button
-            onClick={() => onDelete(guest.id)}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-background hover:bg-destructive/10 text-destructive/70 hover:text-destructive transition-colors cursor-pointer"
-            title="Удалить"
-          >
-            <Icon name="Trash2" size={12} />
-          </button>
+          {onEdit && (
+            <button
+              onClick={() => onEdit(guest)}
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-background hover:bg-accent transition-colors cursor-pointer"
+              title="Редактировать"
+            >
+              <Icon name="Pencil" size={12} />
+            </button>
+          )}
+          {onDelete && (
+            <button
+              onClick={() => onDelete(guest.id)}
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-background hover:bg-destructive/10 text-destructive/70 hover:text-destructive transition-colors cursor-pointer"
+              title="Удалить"
+            >
+              <Icon name="Trash2" size={12} />
+            </button>
+          )}
         </div>
       </div>
     </div>
