@@ -50,19 +50,29 @@ const RsvpSection = () => {
 
   return (
     <>
-      <section id="rsvp" className="py-24 md:py-32">
+      <section id="rsvp" className="py-24 md:py-32" style={{ backgroundColor: "hsl(var(--wedding-cream))" }}>
         <div className="max-w-lg mx-auto px-6 text-center">
           <p className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-4">Ждём вас</p>
           <h2 className="font-serif text-4xl md:text-5xl font-light mb-4" style={{ color: "hsl(var(--wedding-dark))" }}>
             Подтвердите участие
           </h2>
           <div className="wedding-divider mb-8" />
-          <p className="text-muted-foreground font-light mb-10">
+          <p className="text-muted-foreground font-light mb-6">
             Пожалуйста, сообщите нам о вашем присутствии до 26 июля 2026
           </p>
 
+          <div className="flex items-center justify-center gap-3 rounded-xl border px-5 py-4 mb-8 text-sm font-light" style={{ backgroundColor: "white", borderColor: "hsl(var(--wedding-gold) / 0.4)" }}>
+            <Icon name="Phone" size={16} style={{ color: "hsl(var(--wedding-gold))" }} />
+            <span style={{ color: "hsl(var(--wedding-dark))" }}>
+              По всем вопросам — свадебный организатор{" "}
+              <a href="tel:+79214021208" className="font-medium hover:underline" style={{ color: "hsl(var(--wedding-dark))" }}>
+                Алина +7-921-402-12-08
+              </a>
+            </span>
+          </div>
+
           {!rsvpSent ? (
-            <div className="text-left">
+            <div className="text-left bg-white rounded-2xl border p-6 md:p-8 shadow-sm" style={{ borderColor: "hsl(var(--wedding-gold) / 0.2)" }}>
               <div className="flex justify-center gap-2 mb-10">
                 {[0, 1, 2, 3].map((s) => (
                   <div
