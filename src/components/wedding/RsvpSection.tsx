@@ -61,7 +61,7 @@ const RsvpSection = () => {
             Пожалуйста, сообщите нам о вашем присутствии до 26 июля 2026
           </p>
 
-          <div className="flex items-center justify-center gap-3 rounded-xl border px-5 py-4 mb-8 text-sm font-light" style={{ backgroundColor: "white", borderColor: "hsl(var(--wedding-gold) / 0.4)" }}>
+          <div className="flex items-center justify-center gap-3 rounded-xl border px-5 py-4 mb-8 text-sm font-light" style={{ backgroundColor: "white", borderColor: "hsla(var(--wedding-gold), 0.4)" }}>
             <Icon name="Phone" size={16} style={{ color: "hsl(var(--wedding-gold))" }} />
             <span style={{ color: "hsl(var(--wedding-dark))" }}>
               По всем вопросам — свадебный организатор{" "}
@@ -72,7 +72,7 @@ const RsvpSection = () => {
           </div>
 
           {!rsvpSent ? (
-            <div className="text-left bg-white rounded-2xl border p-6 md:p-8 shadow-sm" style={{ borderColor: "hsl(var(--wedding-gold) / 0.2)" }}>
+            <div className="text-left bg-white rounded-2xl border p-6 md:p-8 shadow-sm" style={{ borderColor: "hsla(var(--wedding-gold), 0.2)" }}>
               <div className="flex justify-center gap-2 mb-10">
                 {[0, 1, 2, 3].map((s) => (
                   <div

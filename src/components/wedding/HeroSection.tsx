@@ -100,7 +100,6 @@ const HeroSection = () => {
         <div className="absolute inset-0">
           <video
             ref={videoRef}
-            src={HERO_VIDEO}
             poster={HERO_IMAGE}
             autoPlay
             loop
@@ -108,7 +107,9 @@ const HeroSection = () => {
             playsInline
             preload="auto"
             className="w-full h-full object-cover"
-          />
+          >
+            <source src={HERO_VIDEO} type="video/mp4" />
+          </video>
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50" />
         </div>
 
