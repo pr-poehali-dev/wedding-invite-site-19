@@ -57,9 +57,16 @@ const RsvpSection = () => {
             Подтвердите участие
           </h2>
           <div className="wedding-divider mb-8" />
-          <p className="text-muted-foreground font-light mb-6">
+          <p className="text-muted-foreground font-light mb-4">
             Пожалуйста, сообщите нам о вашем присутствии до 26 июля 2026
           </p>
+
+          <div className="rounded-xl px-5 py-4 mb-6 text-sm" style={{ backgroundColor: "hsl(var(--wedding-dark))", color: "hsl(var(--wedding-cream))" }}>
+            <p className="font-medium tracking-wide mb-1">Важно — заполняет каждый гость отдельно</p>
+            <p className="font-light opacity-80 text-xs leading-relaxed">
+              Форму должен пройти каждый приглашённый лично, даже если вы приедете вместе. Это поможет нам точно подготовиться к празднику.
+            </p>
+          </div>
 
           <div className="flex items-center justify-center gap-3 rounded-xl border px-5 py-4 mb-8 text-sm font-light" style={{ backgroundColor: "white", borderColor: "hsla(var(--wedding-gold), 0.4)" }}>
             <Icon name="Phone" size={16} style={{ color: "hsl(var(--wedding-gold))" }} />
